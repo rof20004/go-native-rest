@@ -1,4 +1,4 @@
-package main
+package user
 
 import (
 	"encoding/json"
@@ -11,7 +11,7 @@ import (
 var users = []User{}
 
 // ListUser endpoint
-func (us *User) ListUser(w http.ResponseWriter, r *http.Request) {
+func ListUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -23,7 +23,7 @@ func (us *User) ListUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // CreateUser endpoint
-func (us *User) CreateUser(w http.ResponseWriter, r *http.Request) {
+func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -45,7 +45,7 @@ func (us *User) CreateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetUser endpoint
-func (us *User) GetUser(w http.ResponseWriter, r *http.Request) {
+func GetUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -62,4 +62,8 @@ func (us *User) GetUser(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
+}
+
+func sayHello() {
+
 }
