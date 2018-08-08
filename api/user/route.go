@@ -6,8 +6,9 @@ import (
 
 // SetRoutes - set user routes
 func SetRoutes(mux *http.ServeMux) {
-	mux.HandleFunc(List, ListUser)
-	mux.HandleFunc(Create, CreateUser)
-	mux.HandleFunc(Get, GetUser)
-	mux.HandleFunc(Update, UpdateUser)
+	const baseURL = "/api/v1/users/"
+	mux.HandleFunc(baseURL, ListUser)
+	mux.HandleFunc(baseURL, CreateUser)
+	mux.HandleFunc(baseURL, GetUser)
+	mux.HandleFunc(baseURL, UpdateUser)
 }
