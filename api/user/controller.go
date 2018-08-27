@@ -9,16 +9,29 @@ import (
 	"github.com/rof20004/go-native-rest/helpers"
 )
 
+// Resources API
+func Resources(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	switch r.Method {
+	case "GET":
+		id := strings.TrimPrefix(r.URL.Path, baseURL)
+		if id != "" {
+			GetUser(w, r)
+		} else {
+			ListUser(w, r)
+		}
+	case "POST":
+		CreateUser(w, r)
+	case "PUT":
+		UpdateUser(w, r)
+	default:
+		w.WriteHeader(http.StatusNotFound)
+		helpers.Response(w, http.StatusNotFound, helpers.ResourceNotFound, nil)
+	}
+}
+
 // ListUser endpoint
 func ListUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-	if r.Method != "GET" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		helpers.Response(w, http.StatusMethodNotAllowed, "Método não permitido", nil)
-		return
-	}
-
 	users, err := list()
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -32,14 +45,6 @@ func ListUser(w http.ResponseWriter, r *http.Request) {
 
 // CreateUser endpoint
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-	if r.Method != "POST" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		helpers.Response(w, http.StatusMethodNotAllowed, "Método não permitido", nil)
-		return
-	}
-
 	user := new(User)
 	json.NewDecoder(r.Body).Decode(user)
 
@@ -62,15 +67,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 // GetUser endpoint
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-	if r.Method != "GET" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		helpers.Response(w, http.StatusMethodNotAllowed, "Método não permitido", nil)
-		return
-	}
-
-	id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, Get))
+	id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, baseURL))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		helpers.Response(w, http.StatusBadRequest, err.Error(), nil)
@@ -90,15 +87,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 // UpdateUser endpoint
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-
-	if r.Method != "PUT" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		helpers.Response(w, http.StatusMethodNotAllowed, "Método não permitido", nil)
-		return
-	}
-
-	id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, Update))
+	id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, baseURL))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		helpers.Response(w, http.StatusBadRequest, err.Error(), nil)
